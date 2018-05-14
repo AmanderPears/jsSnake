@@ -1,0 +1,28 @@
+<!<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Snake Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script>
+</head>
+<body>
+    <div id="game"></div>
+    <div id="controls">
+    <table>
+        <tr>
+            <td><input type="button" value="pause" onclick="stop()"></td>
+            <td><input type="button" value="up" onclick="input(38)"></td>
+            <td><input type="button" value="restart" onclick="refresh()"></td>
+        </tr>
+        <tr>
+            <td><input type="button" value="left" onclick="input(37)"></td>
+            <td><input type="button" value="down" onclick="input(40)"></td>
+            <td><input type="button" value="right" onclick="input(39)"></td>
+        </tr>
+    </table>
+    </div>
+</body>
+</html>
