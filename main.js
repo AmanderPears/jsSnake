@@ -115,8 +115,10 @@ window.onload = function () {
     };
 
     var start = this.setInterval(function () {
-        tick = true;
-        move();
+        if (!pauseGame) {
+            tick = true;
+            move();
+        }
     }, 200);
 
     //refresh button
@@ -126,6 +128,17 @@ window.onload = function () {
     //stop
     stop = function () {
         clearInterval(start);
+    };
+    //pause
+    var pauseGame = false;
+    var pausebtn = document.getElementById("pauseButton");
+    pause = function () {
+        pauseGame = !pauseGame;
+        if (pauseGame) {
+            pausebtn.setAttribute("value", "resume");
+        } else {
+        pausebtn.setAttribute("value", "pause");
+        }
     };
 
     //keypresses
