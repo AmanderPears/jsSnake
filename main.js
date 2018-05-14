@@ -1,3 +1,6 @@
+//Amander Pears
+//amander.jp@gmail.com
+
 window.onload = function () {
     //set window focus
     window.focus();
