@@ -1,4 +1,7 @@
 window.onload = function() {
+    //set window focus
+    window.focus();
+
     //game area
     var gameDiv = this.document.getElementById("game");
     gameDiv.style.backgroundColor = "gray";
@@ -43,12 +46,24 @@ window.onload = function() {
         snake.push(new cell(i,0));
     }
 
-    //prey
-    var prey = new cell(Math.floor(Math.random()*20), 0,
-                        //Math.floor(Math.random()*20),
-                        "red");
+    //create a prey
+    //create new random x and y coordinates
+    var newX = Math.floor(Math.random()*20),
+        newY = Math.floor(Math.random()*20);
+    //create the prey object
+    var prey = new cell(newX, newY, "red");
+    //function to set location of new prey
+    //  function makes sure the new prey does not roll used coordinates
     var newPrey = function() {
-        prey.set(Math.floor(Math.random()*20), Math.floor(Math.random()*20));
+        newX = Math.floor(Math.random()*20),
+        newY = Math.floor(Math.random()*20);
+        for (var i in snake) {
+            if (newX == snake[i].x && newY == snake[i].y) {
+                newX = Math.floor(Math.random()*20);
+                newY = Math.floor(Math.random()*20);
+            }
+        }
+        prey.set(newX, newY);
     };
 
     //snake eat
@@ -60,6 +75,11 @@ window.onload = function() {
     var collisionDetection = function(obj) {
         var leftMax = 20-1,
             topMax = 20-1;
+        for (var i = 1; i < snake.length; i++) {
+            if (snake[0].x == snake[i].x && snake[0].y == snake[i].y) {
+                stop();
+            }
+        }
         if (obj.x < 0 || obj.y < 0 || obj.x > leftMax || obj.y > topMax) {
             stop();
         } else if (obj.x == prey.x && obj.y == prey.y) {
@@ -70,9 +90,14 @@ window.onload = function() {
 
     //snake movement
     var move = function() {
-        console.log(direction);
+        //listen for keypress
+        window.onkeydown = function(e){
+            input(e);
+        };
+
+        //start snake movement
         var temp = snake.pop();
-        
+        //set direction of movement
         if (direction == "right") {
             temp.set(snake[0].x + 1, snake[0].y); 
         } else if (direction == "left") {
@@ -82,15 +107,15 @@ window.onload = function() {
         } else if (direction == "up") {
             temp.set(snake[0].x, snake[0].y - 1); 
         }
-        
-        snake.unshift(temp);
+        //complete the process
+        snake.unshift(temp);           
 
-        console.log("x: " + snake[0].x + ", y: " + snake[0].y);           
-
+        //check for collision
         collisionDetection(snake[0]);
     };
 
     var start = this.setInterval(function() {
+        tick = true;
         move();
     }, 200);
 
@@ -102,22 +127,23 @@ window.onload = function() {
     stop = function() {
         clearInterval(start);
     };
-
+    
     //keypresses
     input = function(e) {
-        if (e.keyCode == 37 || e == 37) {
-            console.log("left");
+        if ((e.keyCode == 37 || e == 37) && direction != "right" && tick) {
+            tick = false;
             direction = "left";
-        } else if (e.keyCode == 38 || e == 38) {
-            console.log("up");
+        } else if ((e.keyCode == 38 || e == 38) && direction != "down" && tick) {
+            tick = false;
             direction = "up";
-        } else if (e.keyCode == 39 || e == 39) {
-            console.log("right");
+        } else if ((e.keyCode == 39 || e == 39) && direction != "left" && tick) {
+            tick = false;
             direction = "right";
-        } else if (e.keyCode == 40 || e == 40) {
-            console.log("down");
+        } else if ((e.keyCode == 40 || e == 40) && direction != "up" && tick) {
+            tick = false;
             direction = "down";
         }
     };
-    window.addEventListener("keydown", input);
+   //window.addEventListener("keydown", input);
+    
 };
