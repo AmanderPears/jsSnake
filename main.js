@@ -1,6 +1,10 @@
 //Amander Pears
 //amander.jp@gmail.com
 
+hwFAC = 25;
+gameH = 17;
+gameW = 20;
+
 window.onload = function () {
     //set window focus
     window.focus();
@@ -8,8 +12,8 @@ window.onload = function () {
     //game area
     var gameDiv = this.document.getElementById("game");
     gameDiv.style.backgroundColor = "gray";
-    gameDiv.style.width = "500px";
-    gameDiv.style.height = "500px";
+    gameDiv.style.width = (gameW*hwFAC) + "px";
+    gameDiv.style.height = (gameH*hwFAC) + "px";
     gameDiv.style.position = "relative";
     //document.body.appendChild(gameDiv);
 
@@ -19,20 +23,20 @@ window.onload = function () {
         this.y = y;
         this.c = document.createElement("div");
         this.c.style.backgroundColor = color == undefined ? "black" : color;
-        this.c.style.width = "25px";
-        this.c.style.height = "25px";
+        this.c.style.width = hwFAC + "px";
+        this.c.style.height = hwFAC + "px";
         this.c.style.position = "absolute";
         gameDiv.appendChild(this.c);
         (function (c) {
-            c.style.left = x * 25 + "px";
-            c.style.top = y * 25 + "px";
+            c.style.left = x * hwFAC + "px";
+            c.style.top = y * hwFAC + "px";
         })(this.c);
 
         this.set = function (x, y) {
             this.x = x;
             this.y = y;
-            this.c.style.left = x * 25 + "px";
-            this.c.style.top = y * 25 + "px";
+            this.c.style.left = x * hwFAC + "px";
+            this.c.style.top = y * hwFAC + "px";
         };
 
         this.cx = this.c.style.left;
@@ -51,19 +55,19 @@ window.onload = function () {
 
     //create a prey
     //create new random x and y coordinates
-    var newX = Math.floor(Math.random() * 20),
-        newY = Math.floor(Math.random() * 20);
+    var newX = Math.floor(Math.random() * gameW),
+        newY = Math.floor(Math.random() * gameH);
     //create the prey object
     var prey = new cell(newX, newY, "red");
     //function to set location of new prey
     //  function makes sure the new prey does not roll used coordinates
     var newPrey = function () {
-        newX = Math.floor(Math.random() * 20),
-            newY = Math.floor(Math.random() * 20);
+        newX = Math.floor(Math.random() * gameW),
+            newY = Math.floor(Math.random() * gameH);
         for (var i in snake) {
             if (newX == snake[i].x && newY == snake[i].y) {
-                newX = Math.floor(Math.random() * 20);
-                newY = Math.floor(Math.random() * 20);
+                newX = Math.floor(Math.random() * gameW);
+                newY = Math.floor(Math.random() * gameH);
             }
         }
         prey.set(newX, newY);
@@ -76,8 +80,8 @@ window.onload = function () {
 
     //collsion
     var collisionDetection = function (obj) {
-        var leftMax = 20 - 1,
-            topMax = 20 - 1;
+        var leftMax = gameW - 1,
+            topMax = gameH - 1;
         for (var i = 1; i < snake.length; i++) {
             if (snake[0].x == snake[i].x && snake[0].y == snake[i].y) {
                 stop();
